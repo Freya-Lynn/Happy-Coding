@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Coding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1a73e8',
+            'primary-hover': '#1557b0',
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Segoe UI Black', 'Segoe UI', Arial, sans-serif; }
+    
+    html[data-theme="light"] {
+      --bg-page: #f7f7f7;
+      --highlight: #ff8ba7;
+      --sidebar-bg: #ffc6c7;
+      --text-main: #33272a;
+      --text-secondary: #5a4e50;
+      --sidebar-gradient: linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%);
+      --avatar-days-bg: #ffe4e6;
+    }
+    
+    html[data-theme="dark"] {
+      background: #202124;
+      --bg-page: #202124;
+      --highlight: #8ab4f8;
+      --sidebar-bg: #1a237e;
+      --sidebar-gradient: linear-gradient(135deg, #101840 0%, #0d1428 100%);
+      --text-main: #ffffff;
+      --text-secondary: #cccccc;
+      --card-bg: #303134;
+      --border-color: rgba(138, 180, 248, 0.4);
+      --avatar-days-bg: #1a237e40;
+    }
+    
+    body { background: var(--bg-page); }
+    
+    /* Laser Button Styles */
+    .btn-laser {
+      background: transparent;
+      border: 1.5px solid var(--highlight);
+      color: var(--highlight);
+      box-shadow: 0 0 8px rgba(255, 139, 167, 0.2);
+    }
+    .btn-laser:hover {
+      background: rgba(255, 139, 167, 0.08);
+      box-shadow: 0 0 12px rgba(255, 139, 167, 0.3);
+    }
+    html[data-theme="dark"] .btn-laser {
+      border-color: #8ab4f8;
+      color: #8ab4f8;
+      box-shadow: 0 0 8px rgba(138, 180, 248, 0.2);
+    }
+    html[data-theme="dark"] .btn-laser:hover {
+      background: rgba(138, 180, 248, 0.1);
+      box-shadow: 0 0 12px rgba(138, 180, 248, 0.3);
+    }
+    
+    .theme-btn {
+      font-size: 18px;
+      cursor: pointer;
+    }
+    
+    .tab-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+      color: var(--text-secondary);
+    }
+    .tab-btn.active {
+      background: #ff8ba7;
+      color: white;
+    }
+    html[data-theme="dark"] .tab-btn.active {
+      background: #8ab4f8;
+      color: #202124;
+    }
+    .tab-btn:hover:not(.active) {
+      background: rgba(0,0,0,0.05);
+    }
+    html[data-theme="dark"] .tab-btn:hover:not(.active) {
+      background: rgba(255,255,255,0.1);
+    }
+    
+    .search-bar {
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      border-radius: 12px;
+      border: 1px solid var(--text-secondary);
+    }
+    html[data-theme="dark"] .search-bar {
+      background: #ffffff;
+      border: 2px solid rgba(138, 180, 248, 0.4);
+    }
+    html[data-theme="dark"] .search-bar input {
+      color: #333333 !important;
+    }
+    html[data-theme="dark"] .search-bar svg {
+      color: #333333 !important;
+    }
+    
+    .sidebar-item {
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+    
+    .sidebar-item:hover { background: rgba(0,0,0,0.04); }
+    html[data-theme="dark"] .sidebar-item:hover { background: rgba(255,255,255,0.08); }
+    .sidebar-item.active { background: #ff8ba720; color: #ff8ba7; }
+    html[data-theme="dark"] .sidebar-item.active { background: rgba(138, 180, 248, 0.2); color: #8ab4f8; }
+    
+    .content-card {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid var(--text-secondary);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      transition: all 0.2s ease;
+    }
+    html[data-theme="dark"] .content-card {
+      background: #303134;
+      border: 2px solid rgba(138, 180, 248, 0.4);
+    }
+    
+    .content-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      transform: translateY(-2px);
+    }
+    html[data-theme="dark"] .content-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    
+    .tag-chip {
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .modal-overlay {
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid var(--text-secondary);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    html[data-theme="dark"] .modal-content {
+      background: #303134;
+      border: 2px solid rgba(138, 180, 248, 0.4);
+    }
+    html[data-theme="dark"] .modal-content h3 {
+      color: #ffffff;
+    }
+    html[data-theme="dark"] .modal-content label {
+      color: #cccccc;
+    }
+    html[data-theme="dark"] .modal-content input,
+    html[data-theme="dark"] .modal-content textarea,
+    html[data-theme="dark"] .modal-content select {
+      background: #292a2d;
+      border-color: #555555;
+      color: #e8eaed;
+    }
+    html[data-theme="dark"] .modal-content input::placeholder,
+    html[data-theme="dark"] .modal-content textarea::placeholder {
+      color: #9aa0a6;
+    }
+    
+    code[class*="language-"], pre[class*="language-"] {
+      font-size: 13px;
+      border-radius: 8px;
+      margin: 0;
+    }
+    
+    .category-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #bbb; }
+    
+    .avatar-btn {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      font-size: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 2px solid var(--text-secondary);
+      overflow: hidden;
+      background: var(--bg-page);
+    }
+    .avatar-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .avatar-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .avatar-menu {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--card-bg, white);
+      border: 2px solid var(--text-secondary);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      z-index: 1000;
+      display: none;
+    }
+    .avatar-menu.show {
+      display: block;
+    }
+    .avatar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      display: none;
+    }
+    .avatar-overlay.show {
+      display: block;
+    }
+    .avatar-menu-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .avatar-menu-item {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .avatar-menu-item:hover {
+      background: rgba(0,0,0,0.1);
+    }
+    html[data-theme="dark"] .avatar-menu-item:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    .avatar-menu-btn {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.15s;
+      text-align: center;
+      background: var(--bg-page);
+      color: var(--text-main);
+      border: 1px solid var(--text-secondary);
+      margin-top: 8px;
+    }
+    .avatar-menu-btn:hover {
+      background: rgba(0,0,0,0.05);
+    }
+    html[data-theme="dark"] .avatar-menu-btn:hover {
+      background: rgba(255,255,255,0.1);
+    }
+  </style>
+</head>
+<body class="h-screen overflow-hidden">
+  <div id="app" class="flex flex-col h-full">
+    <!-- Avatar Overlay -->
+    <div id="avatarOverlay" class="avatar-overlay" onclick="toggleAvatarMenu()"></div>
+    <!-- Main Content -->
+    <div class="flex flex-1 overflow-hidden">
+      <!-- Sidebar -->
+      <aside class="w-56 flex-shrink-0 overflow-y-auto p-4" style="background: var(--sidebar-gradient);">
+        <!-- Avatar -->
+        <div class="flex flex-col items-center mb-6 relative">
+          <div id="avatarBtn" class="avatar-btn" onclick="toggleAvatarMenu()">🐱</div>
+          <div id="avatarName" class="mt-3 text-sm font-medium cursor-pointer" style="color: var(--text-main);" onclick="editAvatarName()">Click to add name</div>
+          <div id="avatarDaysBox" class="mt-2 px-3 py-2 rounded-lg text-xs" style="color: var(--text-main); border: 1px dashed var(--text-secondary); background: var(--avatar-days-bg);"></div>
+          <input type="text" id="avatarNameInput" class="mt-2 text-sm text-center hidden" style="color: var(--text-main); background: var(--bg-page); border: 1px solid var(--text-secondary); border-radius: 4px; padding: 2px 8px;" placeholder="Your name" onkeydown="saveAvatarName(event)" onblur="saveAvatarNameBlur()">
+        </div>
+        <div id="avatarMenu" class="avatar-menu">
+          <div class="avatar-menu-grid">
+            <div class="avatar-menu-item" onclick="setAvatar('🐱')">🐱</div>
+            <div class="avatar-menu-item" onclick="setAvatar('🐶')">🐶</div>
+            <div class="avatar-menu-item" onclick="setAvatar('🐰')">🐰</div>
+            <div class="avatar-menu-item" onclick="setAvatar('🦊')">🦊</div>
+            <div class="avatar-menu-item" onclick="setAvatar('🐼')">🐼</div>
+            <div class="avatar-menu-item" onclick="setAvatar('🐨')">🐨</div>
+            <div class="avatar-menu-item" onclick="setAvatar('🦁')">🦁</div>
+            <div class="avatar-menu-item" onclick="setAvatar('🐸')">🐸</div>
+            <div class="avatar-menu-item" onclick="setAvatar('🐻')">🐻</div>
+            <div class="avatar-menu-item" onclick="setAvatar('🐯')">🐯</div>
+          </div>
+          <div class="avatar-menu-btn" onclick="randomAvatar()">🎲 Random</div>
+          <div class="avatar-menu-btn" onclick="document.getElementById('avatarUpload').click()">📁 Upload Image</div>
+          <input type="file" id="avatarUpload" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
+        </div>
+        
+        <div class="mb-6">
+          <h3 class="text-sm font-semibold uppercase mb-2 px-3" style="color: var(--text-secondary);">Languages</h3>
+          <div id="languageList"></div>
+        </div>
+        <div class="mb-6">
+          <h3 class="text-sm font-semibold uppercase mb-2 px-3" style="color: var(--text-secondary);">Tech Stack</h3>
+          <div id="techList"></div>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold uppercase mb-2 px-3" style="color: var(--text-secondary);">Tags</h3>
+          <div id="tagList" class="flex flex-wrap gap-2 px-3"></div>
+        </div>
+      </aside>
+      
+      <!-- Right Panel -->
+      <div class="flex flex-col flex-1 overflow-hidden">
+        <!-- Top Search Bar -->
+        <div class="px-6 py-4 flex-shrink-0" style="background: var(--bg-page);">
+          <div class="flex items-center gap-4">
+            <h1 class="text-xl font-semibold" style="color: var(--text-main);">Happy Coding</h1>
+            
+            <!-- Tab Switcher -->
+            <div class="flex items-center gap-1 px-1 py-1 rounded-xl" style="background: var(--bg-page); border: 1px solid var(--text-secondary);">
+              <button onclick="switchTab('code')" id="tabCode" class="tab-btn px-3 py-1 rounded text-sm font-medium transition">Code Snippets</button>
+              <button onclick="switchTab('prompts')" id="tabPrompts" class="tab-btn px-3 py-1 rounded text-sm font-medium transition">Prompts</button>
+            </div>
+            
+            <div class="flex-1 search-bar px-4 py-2.5 flex items-center gap-3">
+              <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+              <input type="text" id="searchInput" placeholder="Search code snippets..." 
+                     class="flex-1 bg-transparent border-none outline-none text-sm"
+                     onkeyup="handleSearch(this.value)">
+              <span id="clearSearch" class="text-gray-400 cursor-pointer hidden" onclick="clearSearch()">×</span>
+            </div>
+            <button onclick="toggleTheme()" class="btn-laser px-3 py-2 rounded-lg text-sm font-medium transition theme-btn">
+              🌙
+            </button>
+            <button onclick="showAddModal()" class="btn-laser px-4 py-2 rounded-lg text-sm font-medium transition">
+              + Add
+            </button>
+          </div>
+        </div>
+        
+        <!-- Content Area -->
+        <main class="flex-1 overflow-y-auto p-6" style="background: var(--bg-page);">
+          <div id="contentGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </main>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal -->
+  <div id="modalOverlay" class="fixed inset-0 modal-overlay hidden flex items-center justify-center z-50 p-4">
+    <div class="modal-content w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div class="px-6 py-4 border-b flex items-center justify-between">
+        <h3 id="modalTitle" class="text-lg font-semibold">Add Code Snippet</h3>
+        <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div id="modalContent" class="p-6 space-y-4"></div>
+    </div>
+  </div>
+  
+  <!-- View Modal -->
+  <div id="viewModalOverlay" class="fixed inset-0 modal-overlay hidden flex items-center justify-center z-50 p-4">
+    <div class="modal-content w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+      <div class="px-6 py-4 border-b flex items-center justify-between">
+        <h3 id="viewModalTitle" class="text-lg font-semibold"></h3>
+        <div class="flex items-center gap-2">
+          <button onclick="editItem()" class="text-blue-600 hover:text-blue-700 text-sm font-medium">Edit</button>
+          <button onclick="deleteItem()" class="text-red-600 hover:text-red-700 text-sm font-medium">Delete</button>
+          <button onclick="closeViewModal()" class="text-gray-400 hover:text-gray-600 ml-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div id="viewModalContent" class="p-6"></div>
+    </div>
+  </div>
+
+  <script>
+    var data = [];
+    var currentFilter = { type: '', value: '' };
+    var searchQuery = '';
+    var editIndex = -1;
+    var viewIndex = -1;
+    
+    var languages = [
+      { name: 'JavaScript', color: '#f7df1e', category: 'Web' },
+      { name: 'Python', color: '#3776ab', category: 'Backend' },
+      { name: 'HTML', color: '#e34f26', category: 'Web' },
+      { name: 'CSS', color: '#1572b6', category: 'Web' },
+      { name: 'Bash', color: '#4eaa25', category: 'Script' },
+      { name: 'Command Line', color: '#000000', category: 'System' },
+      { name: 'Other', color: '#888888', category: 'Other' }
+    ];
+    
+    var languageCategoryColors = {
+      'Web': '#f59e0b',
+      'Backend': '#3b82f6',
+      'Script': '#10b981',
+      'System': '#1f2937',
+      'Other': '#6b7280'
+    };
+    
+    var techs = [
+      { name: 'Electron', color: '#47848f', category: 'Desktop' },
+      { name: 'React', color: '#61dafb', category: 'Frontend' },
+      { name: 'Node.js', color: '#339933', category: 'Backend' },
+      { name: 'Vue', color: '#42b883', category: 'Frontend' },
+      { name: 'Tailwind', color: '#06b6d4', category: 'Frontend' },
+      { name: 'Other', color: '#888888', category: 'Other' }
+    ];
+    
+    var techCategoryColors = {
+      'Frontend': '#06b6d4',
+      'Backend': '#3b82f6',
+      'Desktop': '#8b5cf6',
+      'Other': '#6b7280'
+    };
+    
+    // Prompts data and scenarios
+    var promptsData = [];
+    var currentTab = 'code';
+    var scenarios = [
+      { name: 'Code Development', color: '#10b981' },
+      { name: 'Text Processing', color: '#8b5cf6' },
+      { name: 'Data Processing', color: '#f59e0b' },
+      { name: 'Translation', color: '#ec4899' }
+    ];
+    var scenarioColors = {};
+    scenarios.forEach(s => scenarioColors[s.name] = s.color);
+    
+    var languageColors = {};
+    var techColors = {};
+    languages.forEach(l => languageColors[l.name] = l.color);
+    techs.forEach(t => techColors[t.name] = t.color);
+    
+    var avatarEmojis = ['🐱', '🐶', '🐰', '🦊', '🐼', '🐨', '🦁', '🐸', '🐻', '🐯'];
+    
+    function toggleAvatarMenu() {
+      var menu = document.getElementById('avatarMenu');
+      var overlay = document.getElementById('avatarOverlay');
+      menu.classList.toggle('show');
+      overlay.classList.toggle('show');
+    }
+    
+    function setAvatar(emoji) {
+      localStorage.setItem('happy-coding-avatar', emoji);
+      localStorage.removeItem('happy-coding-avatar-image');
+      renderAvatar();
+      document.getElementById('avatarMenu').classList.remove('show');
+      document.getElementById('avatarOverlay').classList.remove('show');
+    }
+    
+    function randomAvatar() {
+      var randomEmoji = avatarEmojis[Math.floor(Math.random() * avatarEmojis.length)];
+      setAvatar(randomEmoji);
+    }
+    
+    function handleAvatarUpload(event) {
+      var file = event.target.files[0];
+      if (file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          localStorage.setItem('happy-coding-avatar-image', e.target.result);
+          renderAvatar();
+          document.getElementById('avatarMenu').classList.remove('show');
+          document.getElementById('avatarOverlay').classList.remove('show');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+    
+    function renderAvatar() {
+      var avatarBtn = document.getElementById('avatarBtn');
+      var avatarName = document.getElementById('avatarName');
+      var avatarDaysBox = document.getElementById('avatarDaysBox');
+      var avatarImage = localStorage.getItem('happy-coding-avatar-image');
+      var avatarEmoji = localStorage.getItem('happy-coding-avatar') || '🐱';
+      var savedName = localStorage.getItem('happy-coding-avatar-name') || '';
+      
+      if (avatarImage) {
+        avatarBtn.innerHTML = '<img src="' + avatarImage + '" alt="avatar">';
+      } else {
+        avatarBtn.textContent = avatarEmoji;
+      }
+      
+      if (savedName) {
+        avatarName.textContent = savedName;
+        var startDate = new Date('2026-02-25');
+        var today = new Date();
+        var diffTime = today - startDate;
+        var diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        if (diffDays < 0) diffDays = 0;
+        avatarDaysBox.textContent = savedName + ' has been on happy coding for ' + diffDays + ' days';
+      } else {
+        avatarName.textContent = 'Click to add name';
+        avatarDaysBox.textContent = '';
+      }
+    }
+    
+    function editAvatarName() {
+      var nameInput = document.getElementById('avatarNameInput');
+      var nameDisplay = document.getElementById('avatarName');
+      var currentName = localStorage.getItem('happy-coding-avatar-name') || '';
+      
+      nameDisplay.classList.add('hidden');
+      nameInput.classList.remove('hidden');
+      nameInput.value = currentName;
+      nameInput.focus();
+    }
+    
+    function saveAvatarName(event) {
+      if (event.key === 'Enter') {
+        var nameInput = document.getElementById('avatarNameInput');
+        var name = nameInput.value.trim();
+        localStorage.setItem('happy-coding-avatar-name', name);
+        renderAvatar();
+        nameInput.classList.add('hidden');
+        document.getElementById('avatarName').classList.remove('hidden');
+      }
+    }
+    
+    function saveAvatarNameBlur() {
+      var nameInput = document.getElementById('avatarNameInput');
+      var name = nameInput.value.trim();
+      localStorage.setItem('happy-coding-avatar-name', name);
+      renderAvatar();
+      nameInput.classList.add('hidden');
+      document.getElementById('avatarName').classList.remove('hidden');
+    }
+    
+    function toggleTheme() {
+      var html = document.documentElement;
+      var currentTheme = html.getAttribute('data-theme');
+      var newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('happy-coding-theme', newTheme);
+      updateThemeIcon(newTheme);
+      renderSidebar();
+      renderContent();
+    }
+    
+    function updateThemeIcon(theme) {
+      var btn = document.querySelector('.theme-btn');
+      if (btn) {
+        btn.textContent = theme === 'light' ? '🌙' : '☀️';
+      }
+    }
+    
+    function init() {
+      // Load theme
+      var savedTheme = localStorage.getItem('happy-coding-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+      
+      // Load avatar
+      renderAvatar();
+      
+      // Load code snippets
+      var stored = localStorage.getItem('happy-coding-data');
+      if (stored) {
+        try {
+          data = JSON.parse(stored);
+        } catch (e) {
+          data = [];
+        }
+      }
+      
+      // Load prompts
+      var storedPrompts = localStorage.getItem('happy-coding-prompts');
+      if (storedPrompts) {
+        try {
+          promptsData = JSON.parse(storedPrompts);
+        } catch (e) {
+          promptsData = [];
+        }
+      }
+      
+      // Load saved tab
+      currentTab = localStorage.getItem('happy-coding-tab') || 'code';
+      updateTabButtons();
+      
+      renderSidebar();
+      renderContent();
+    }
+    
+    function switchTab(tab) {
+      currentTab = tab;
+      localStorage.setItem('happy-coding-tab', tab);
+      updateTabButtons();
+      currentFilter = { type: '', value: '' };
+      renderSidebar();
+      renderContent();
+      
+      // Update search placeholder
+      var searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.placeholder = tab === 'code' ? 'Search code snippets...' : 'Search prompts...';
+        searchInput.value = '';
+        searchQuery = '';
+      }
+    }
+    
+    function updateTabButtons() {
+      document.getElementById('tabCode').classList.toggle('active', currentTab === 'code');
+      document.getElementById('tabPrompts').classList.toggle('active', currentTab === 'prompts');
+    }
+    
+    function saveData() {
+      localStorage.setItem('happy-coding-data', JSON.stringify(data));
+      localStorage.setItem('happy-coding-prompts', JSON.stringify(promptsData));
+    }
+    
+    function renderSidebar() {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      var dotColor = isDark ? '#8ab4f8' : null;
+      
+      if (currentTab === 'code') {
+        // Languages
+        var langHtml = '<div onclick="filterByCategory(\'\')" class="sidebar-item ' + (currentFilter.type === '' ? 'active' : '') + '">All</div>';
+        languages.forEach(lang => {
+          var count = data.filter(d => d.language === lang.name).length;
+          if (count > 0) {
+            var bgColor = dotColor || languageCategoryColors[lang.category] || lang.color;
+            langHtml += '<div onclick="filterByCategory(\'' + lang.name + '\')" class="sidebar-item flex items-center gap-2 ' + (currentFilter.type === 'language' && currentFilter.value === lang.name ? 'active' : '') + '">';
+            langHtml += '<span class="category-dot" style="background: ' + bgColor + '"></span>';
+            langHtml += '<span class="flex-1">' + lang.name + '</span>';
+            langHtml += '<span class="text-xs" style="color: var(--text-secondary);">' + count + '</span>';
+            langHtml += '</div>';
+          }
+        });
+        document.getElementById('languageList').innerHTML = langHtml;
+        
+        // Techs
+        var techHtml = '';
+        techs.forEach(tech => {
+          var count = data.filter(d => d.tech === tech.name).length;
+          if (count > 0) {
+            var bgColor = dotColor || techCategoryColors[tech.category] || tech.color;
+            techHtml += '<div onclick="filterByTech(\'' + tech.name + '\')" class="sidebar-item flex items-center gap-2 ' + (currentFilter.type === 'tech' && currentFilter.value === tech.name ? 'active' : '') + '">';
+            techHtml += '<span class="category-dot" style="background: ' + bgColor + '"></span>';
+            techHtml += '<span class="flex-1">' + tech.name + '</span>';
+            techHtml += '<span class="text-xs" style="color: var(--text-secondary);">' + count + '</span>';
+            techHtml += '</div>';
+          }
+        });
+        document.getElementById('techList').innerHTML = techHtml;
+        
+        // Tags
+        var allTags = {};
+        data.forEach(d => {
+          if (d.tags) {
+            d.tags.forEach(t => allTags[t] = true);
+          }
+        });
+        var tagHtml = '';
+        Object.keys(allTags).sort().forEach(tag => {
+          tagHtml += '<span onclick="filterByTag(\'' + tag + '\')" class="tag-chip cursor-pointer ' + (currentFilter.type === 'tag' && currentFilter.value === tag ? 'bg-blue-100 text-blue-600' : '') + '" style="background: var(--bg-page); color: var(--text-secondary);">' + tag + '</span>';
+        });
+        document.getElementById('tagList').innerHTML = tagHtml || '<span class="text-xs px-3" style="color: var(--text-secondary);">No tags</span>';
+      } else {
+        // Prompts - show scenarios
+        document.getElementById('languageList').innerHTML = '';
+        document.getElementById('techList').innerHTML = '';
+        
+        var scenarioHtml = '<div onclick="filterByScenario(\'\')" class="sidebar-item ' + (currentFilter.type === '' ? 'active' : '') + '">All</div>';
+        scenarios.forEach(s => {
+          var count = promptsData.filter(p => p.scenario === s.name).length;
+          if (count > 0) {
+            var bgColor = dotColor || s.color;
+            scenarioHtml += '<div onclick="filterByScenario(\'' + s.name + '\')" class="sidebar-item flex items-center gap-2 ' + (currentFilter.type === 'scenario' && currentFilter.value === s.name ? 'active' : '') + '">';
+            scenarioHtml += '<span class="category-dot" style="background: ' + bgColor + '"></span>';
+            scenarioHtml += '<span class="flex-1">' + s.name + '</span>';
+            scenarioHtml += '<span class="text-xs" style="color: var(--text-secondary);">' + count + '</span>';
+            scenarioHtml += '</div>';
+          }
+        });
+        document.getElementById('languageList').innerHTML = scenarioHtml;
+        
+        // Tags for prompts
+        var allTags = {};
+        promptsData.forEach(p => {
+          if (p.tags) {
+            p.tags.forEach(t => allTags[t] = true);
+          }
+        });
+        var tagHtml = '';
+        Object.keys(allTags).sort().forEach(tag => {
+          tagHtml += '<span onclick="filterByTag(\'' + tag + '\')" class="tag-chip cursor-pointer ' + (currentFilter.type === 'tag' && currentFilter.value === tag ? 'bg-blue-100 text-blue-600' : '') + '" style="background: var(--bg-page); color: var(--text-secondary);">' + tag + '</span>';
+        });
+        document.getElementById('tagList').innerHTML = tagHtml || '<span class="text-xs px-3" style="color: var(--text-secondary);">No tags</span>';
+      }
+    }
+    
+    function filterByCategory(lang) {
+      if (currentFilter.type === 'language' && currentFilter.value === lang) {
+        currentFilter = { type: '', value: '' };
+      } else {
+        currentFilter = { type: 'language', value: lang };
+      }
+      renderSidebar();
+      renderContent();
+    }
+    
+    function filterByTech(tech) {
+      if (currentTab !== 'code') return;
+      if (currentFilter.type === 'tech' && currentFilter.value === tech) {
+        currentFilter = { type: '', value: '' };
+      } else {
+        currentFilter = { type: 'tech', value: tech };
+      }
+      renderSidebar();
+      renderContent();
+    }
+    
+    function filterByScenario(scenario) {
+      if (currentTab !== 'prompts') return;
+      if (currentFilter.type === 'scenario' && currentFilter.value === scenario) {
+        currentFilter = { type: '', value: '' };
+      } else {
+        currentFilter = { type: 'scenario', value: scenario };
+      }
+      renderSidebar();
+      renderContent();
+    }
+    
+    function filterByTag(tag) {
+      if (currentFilter.type === 'tag' && currentFilter.value === tag) {
+        currentFilter = { type: '', value: '' };
+      } else {
+        currentFilter = { type: 'tag', value: tag };
+      }
+      renderSidebar();
+      renderContent();
+    }
+    
+    function handleSearch(value) {
+      searchQuery = value.toLowerCase();
+      document.getElementById('clearSearch').classList.toggle('hidden', !value);
+      renderContent();
+    }
+    
+    function clearSearch() {
+      document.getElementById('searchInput').value = '';
+      searchQuery = '';
+      document.getElementById('clearSearch').classList.add('hidden');
+      renderContent();
+    }
+    
+    function getFilteredData() {
+      var filtered = currentTab === 'code' ? data : promptsData;
+      var filterType = currentFilter.type;
+      var filterValue = currentFilter.value;
+      
+      if (currentTab === 'code') {
+        if (filterType === 'language' && filterValue) {
+          filtered = filtered.filter(d => d.language === filterValue);
+        } else if (filterType === 'tech' && filterValue) {
+          filtered = filtered.filter(d => d.tech === filterValue);
+        } else if (filterType === 'tag' && filterValue) {
+          filtered = filtered.filter(d => d.tags && d.tags.includes(filterValue));
+        }
+      } else {
+        if (filterType === 'scenario' && filterValue) {
+          filtered = filtered.filter(p => p.scenario === filterValue);
+        } else if (filterType === 'tag' && filterValue) {
+          filtered = filtered.filter(p => p.tags && p.tags.includes(filterValue));
+        }
+      }
+      
+      if (searchQuery) {
+        filtered = filtered.filter(d => 
+          d.title.toLowerCase().includes(searchQuery) ||
+          (d.content && d.content.toLowerCase().includes(searchQuery)) ||
+          (d.notes && d.notes.toLowerCase().includes(searchQuery))
+        );
+      }
+      
+      return filtered;
+    }
+    
+    function renderContent() {
+      var filtered = getFilteredData();
+      var grid = document.getElementById('contentGrid');
+      
+      var emptyMessage = currentTab === 'code' ? 'No code snippets' : 'No prompts';
+      var emptyButton = currentTab === 'code' ? 'Click to add your first code snippet' : 'Click to add your first prompt';
+      
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="col-span-full text-center py-12">';
+        grid.innerHTML += '<p class="mb-4" style="color: var(--text-secondary);">' + emptyMessage + '</p>';
+        grid.innerHTML += '<button onclick="showAddModal()" class="text-blue-600 hover:text-blue-700">' + emptyButton + '</button>';
+        grid.innerHTML += '</div>';
+        return;
+      }
+      
+      if (currentTab === 'code') {
+        // Render code snippets
+        var html = '';
+        filtered.forEach((item, index) => {
+          var langColor = languageColors[item.language] || '#888888';
+          var techColor = techColors[item.tech] || '#888888';
+          
+          var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+          var langTextColor = isDark ? '#ffffff' : langColor;
+          var techTextColor = isDark ? '#ffffff' : techColor;
+          
+          html += '<div onclick="viewItem(' + index + ')" class="content-card p-4 cursor-pointer">';
+          html += '<div class="flex items-start justify-between mb-3">';
+          html += '<h3 class="font-semibold text-base" style="color: var(--text-main);">' + item.title + '</h3>';
+          html += '</div>';
+          html += '<div class="flex items-center gap-2 mb-3">';
+          html += '<span class="tag-chip" style="background: ' + langColor + '20; color: ' + langTextColor + ' !important;">' + item.language + '</span>';
+          if (item.tech) {
+            html += '<span class="tag-chip" style="background: ' + techColor + '20; color: ' + techTextColor + ' !important;">' + item.tech + '</span>';
+          }
+          html += '</div>';
+          if (item.content) {
+            var preview = item.content.substring(0, 150);
+            if (item.content.length > 150) preview += '...';
+            html += '<pre class="text-xs p-2 rounded overflow-hidden" style="max-height: 60px; background: var(--bg-page); color: var(--text-secondary);">' + preview + '</pre>';
+          }
+          if (item.tags && item.tags.length > 0) {
+            html += '<div class="flex flex-wrap gap-1 mt-3">';
+            item.tags.forEach(tag => {
+              html += '<span class="text-xs px-2 py-0.5 rounded" style="background: var(--bg-page); color: var(--text-secondary);">' + tag + '</span>';
+            });
+            html += '</div>';
+          }
+          html += '</div>';
+        });
+        grid.innerHTML = html;
+      } else {
+        // Render prompts
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        var html = '';
+        filtered.forEach((item, index) => {
+          var scenarioColor = scenarioColors[item.scenario] || '#888888';
+          var scenarioTextColor = isDark ? '#ffffff' : scenarioColor;
+          
+          html += '<div onclick="viewPrompt(' + index + ')" class="content-card p-4 cursor-pointer">';
+          html += '<div class="flex items-start justify-between mb-3">';
+          html += '<h3 class="font-semibold text-base" style="color: var(--text-main);">' + item.title + '</h3>';
+          html += '<button onclick="event.stopPropagation(); copyPrompt(' + index + ')" class="btn-laser px-2 py-1 rounded text-xs">Copy</button>';
+          html += '</div>';
+          if (item.scenario) {
+            html += '<div class="flex items-center gap-2 mb-3">';
+            html += '<span class="tag-chip" style="background: ' + scenarioColor + '20; color: ' + scenarioTextColor + ' !important;">' + item.scenario + '</span>';
+            html += '</div>';
+          }
+          if (item.content) {
+            var preview = item.content.substring(0, 150);
+            if (item.content.length > 150) preview += '...';
+            html += '<pre class="text-xs p-2 rounded overflow-hidden" style="max-height: 60px; background: var(--bg-page); color: var(--text-secondary);">' + preview + '</pre>';
+          }
+          if (item.tags && item.tags.length > 0) {
+            html += '<div class="flex flex-wrap gap-1 mt-3">';
+            item.tags.forEach(tag => {
+              html += '<span class="text-xs px-2 py-0.5 rounded" style="background: var(--bg-page); color: var(--text-secondary);">' + tag + '</span>';
+            });
+            html += '</div>';
+          }
+          html += '</div>';
+        });
+        grid.innerHTML = html;
+      }
+    }
+    
+    function copyPrompt(index) {
+      var filtered = getFilteredData();
+      var item = filtered[index];
+      if (item && item.content) {
+        navigator.clipboard.writeText(item.content).then(function() {
+          alert('Copied to clipboard!');
+        });
+      }
+    }
+    
+    function viewPrompt(index) {
+      var filtered = getFilteredData();
+      var item = filtered[index];
+      viewIndex = promptsData.indexOf(item);
+      viewItem(index);
+    }
+    
+    function showAddModal(isEdit) {
+      isEdit = isEdit || false;
+      
+      var html = '';
+      
+      if (currentTab === 'code') {
+        // Code Snippets form
+        editIndex = isEdit ? viewIndex : -1;
+        var item = isEdit && editIndex >= 0 ? data[editIndex] : null;
+        var title = item ? item.title : '';
+        var language = item ? item.language : 'JavaScript';
+        var tech = item ? item.tech : '';
+        var content = item ? item.content : '';
+        var notes = item ? item.notes : '';
+        var tags = item ? (item.tags ? item.tags.join(', ') : '') : '';
+        
+        var langOptions = languages.map(l => '<option value="' + l.name + '" ' + (l.name === language ? 'selected' : '') + '>' + l.name + '</option>').join('');
+        var techOptions = techs.map(t => '<option value="' + t.name + '" ' + (t.name === tech ? 'selected' : '') + '>' + t.name + '</option>').join('');
+        
+        html += '<div>';
+        html += '<label class="block text-base font-medium mb-1" style="color: var(--text-main);">Title <span class="text-red-500">*</span></label>';
+        html += '<input type="text" id="itemTitle" value="' + title + '" placeholder="e.g. Electron App Update Steps" class="w-full px-3 py-2 border rounded-lg text-base">';
+        html += '</div>';
+        html += '<div class="grid grid-cols-2 gap-4">';
+        html += '<div>';
+        html += '<label class="block text-base font-medium mb-1" style="color: var(--text-main);">Language</label>';
+        html += '<select id="itemLanguage" class="w-full px-3 py-2 border rounded-lg text-base">' + langOptions + '</select>';
+        html += '</div>';
+        html += '<div>';
+        html += '<label class="block text-base font-medium mb-1" style="color: var(--text-main);">Tech Stack</label>';
+        html += '<select id="itemTech" class="w-full px-3 py-2 border rounded-lg text-base"><option value="">None</option>' + techOptions + '</select>';
+        html += '</div>';
+        html += '</div>';
+        html += '<div>';
+        html += '<label class="block text-base font-medium mb-1" style="color: var(--text-main);">Code</label>';
+        html += '<textarea id="itemContent" rows="8" placeholder="Paste your code here..." class="w-full px-3 py-2 border rounded-lg text-base font-mono">' + content + '</textarea>';
+        html += '</div>';
+        html += '<div>';
+        html += '<label class="block text-base font-medium mb-1" style="color: var(--text-main);">Steps</label>';
+        html += '<textarea id="itemNotes" rows="3" placeholder="e.g. Step 1: xxx, Step 2: xxx" class="w-full px-3 py-2 border rounded-lg text-base">' + notes + '</textarea>';
+        html += '</div>';
+        html += '<div>';
+        html += '<label class="block text-base font-medium mb-1" style="color: var(--text-main);">Warnings</label>';
+        html += '<textarea id="itemWarnings" rows="2" placeholder="e.g. Do not use in production" class="w-full px-3 py-2 border rounded-lg text-base"></textarea>';
+        html += '</div>';
+        html += '<div>';
+        html += '<label class="block text-base font-medium mb-1" style="color: var(--text-main);">Tags (comma separated)</label>';
+        html += '<input type="text" id="itemTags" value="' + tags + '" placeholder="e.g. advanced, practical" class="w-full px-3 py-2 border rounded-lg text-base">';
+        html += '</div>';
+        
+        document.getElementById('modalTitle').textContent = isEdit ? 'Edit Code Snippet' : 'Add Code Snippet';
+      } else {
+        // Prompts form
+        editIndex = isEdit ? viewIndex : -1;
+        var item = isEdit && editIndex >= 0 ? promptsData[editIndex] : null;
+        var title = item ? item.title : '';
+        var scenario = item ? item.scenario : '';
+        var content = item ? item.content : '';
+        var example = item ? item.example : '';
+        var tags = item ? (item.tags ? item.tags.join(', ') : '') : '';
+        
+        var scenarioOptions = scenarios.map(s => '<option value="' + s.name + '" ' + (s.name === scenario ? 'selected' : '') + '>' + s.name + '</option>').join('');
+        
+        html += '<div>';
+        html += '<label class="block text-base font-medium mb-1" style="color: var(--text-main);">Title <span class="text-red-500">*</span></label>';
+        html += '<input type="text" id="itemTitle" value="' + title + '" placeholder="e.g. Code Optimization Assistant" class="w-full px-3 py-2 border rounded-lg text-base">';
+        html += '</div>';
+        html += '<div>';
+        html += '<label class="block text-base font-medium mb-1" style="color: var(--text-main);">Scenario</label>';
+        html += '<select id="itemScenario" class="w-full px-3 py-2 border rounded-lg text-base">' + scenarioOptions + '</select>';
+        html += '</div>';
+        html += '<div>';
+        html += '<label class="block text-base font-medium mb-1" style="color: var(--text-main);">Prompt <span class="text-red-500">*</span></label>';
+        html += '<textarea id="itemContent" rows="8" placeholder="Enter your prompt here..." class="w-full px-3 py-2 border rounded-lg text-base font-mono">' + content + '</textarea>';
+        html += '</div>';
+        html += '<div>';
+        html += '<label class="block text-base font-medium mb-1" style="color: var(--text-main);">Example</label>';
+        html += '<textarea id="itemExample" rows="3" placeholder="e.g. Please optimize the following code..." class="w-full px-3 py-2 border rounded-lg text-base">' + example + '</textarea>';
+        html += '</div>';
+        html += '<div>';
+        html += '<label class="block text-base font-medium mb-1" style="color: var(--text-main);">Tags (comma separated)</label>';
+        html += '<input type="text" id="itemTags" value="' + tags + '" placeholder="e.g. AI, optimization" class="w-full px-3 py-2 border rounded-lg text-base">';
+        html += '</div>';
+        
+        document.getElementById('modalTitle').textContent = isEdit ? 'Edit Prompt' : 'Add Prompt';
+      }
+      
+      document.getElementById('modalContent').innerHTML = html;
+      
+      var actionsHtml = '<button onclick="closeModal()" class="px-4 py-2 text-sm" style="color: var(--text-secondary);">Cancel</button>';
+      actionsHtml += '<button onclick="handleSubmit(' + (isEdit ? 'true' : 'false') + ')" class="btn-laser px-4 py-2 rounded-lg text-sm font-medium">' + (isEdit ? 'Save' : 'Add') + '</button>';
+      document.getElementById('modalContent').innerHTML += '<div class="flex justify-end gap-2 pt-4 border-t">' + actionsHtml + '</div>';
+      
+      document.getElementById('modalOverlay').classList.remove('hidden');
+    }
+    
+    function handleSubmit(isEdit) {
+      var title = document.getElementById('itemTitle').value.trim();
+      var content = document.getElementById('itemContent').value;
+      var tagsInput = document.getElementById('itemTags').value.trim();
+      var tags = tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : [];
+      
+      if (!title) {
+        alert('Please enter a title');
+        return;
+      }
+      
+      if (!content) {
+        alert('Please enter content');
+        return;
+      }
+      
+      if (currentTab === 'code') {
+        var language = document.getElementById('itemLanguage').value;
+        var tech = document.getElementById('itemTech').value;
+        var notes = document.getElementById('itemNotes').value.trim();
+        var warnings = document.getElementById('itemWarnings') ? document.getElementById('itemWarnings').value.trim() : '';
+        
+        if (isEdit && editIndex >= 0) {
+          data[editIndex] = { ...data[editIndex], title, language, tech, content, notes, warnings, tags };
+        } else {
+          data.push({ id: Date.now(), title, language, tech, content, notes, warnings, tags, createdAt: Date.now() });
+        }
+      } else {
+        var scenario = document.getElementById('itemScenario').value;
+        var example = document.getElementById('itemExample').value.trim();
+        
+        if (isEdit && editIndex >= 0) {
+          promptsData[editIndex] = { ...promptsData[editIndex], title, scenario, content, example, tags };
+        } else {
+          promptsData.push({ id: Date.now(), title, scenario, content, example, tags, createdAt: Date.now() });
+        }
+      }
+      
+      saveData();
+      closeModal();
+      renderSidebar();
+      renderContent();
+    }
+    
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.add('hidden');
+      editIndex = -1;
+    }
+    
+    function viewItem(index) {
+      var item = getFilteredData()[index];
+      viewIndex = data.indexOf(item);
+      
+      var langColor = languageColors[item.language] || '#888888';
+      var techColor = techColors[item.tech] || '#888888';
+      
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      var langTextColor = isDark ? '#ffffff' : langColor;
+      var techTextColor = isDark ? '#ffffff' : techColor;
+      
+      var html = '';
+      html += '<div class="mb-4">';
+      html += '<h2 class="text-xl font-semibold mb-3" style="color: var(--text-main);">' + item.title + '</h2>';
+      html += '<div class="flex items-center gap-2 mb-4">';
+      html += '<span class="tag-chip" style="background: ' + langColor + '20; color: ' + langTextColor + ' !important;">' + item.language + '</span>';
+      if (item.tech) {
+        html += '<span class="tag-chip" style="background: ' + techColor + '20; color: ' + techTextColor + ' !important;">' + item.tech + '</span>';
+      }
+      html += '</div>';
+      if (item.tags && item.tags.length > 0) {
+        html += '<div class="flex flex-wrap gap-1 mb-4">';
+        item.tags.forEach(tag => {
+          html += '<span class="text-xs px-2 py-0.5 rounded" style="background: var(--bg-page); color: var(--text-secondary);">' + tag + '</span>';
+        });
+        html += '</div>';
+      }
+      html += '</div>';
+      
+      if (item.content) {
+        html += '<div class="mb-4">';
+        html += '<h4 class="text-sm font-semibold mb-2" style="color: var(--text-secondary);">Code</h4>';
+        var codeId = 'code-' + Date.now();
+        html += '<pre class="rounded-lg"><code id="' + codeId + '" class="language-' + getPrismLang(item.language) + '">' + escapeHtml(item.content) + '</code></pre>';
+        html += '</div>';
+      }
+      
+      if (item.notes) {
+        html += '<div class="mb-4">';
+        html += '<h4 class="text-sm font-semibold mb-2" style="color: var(--text-secondary);">Steps</h4>';
+        html += '<div class="text-sm whitespace-pre-wrap p-4 rounded-lg" style="background: var(--bg-page); color: var(--text-main);">' + item.notes + '</div>';
+        html += '</div>';
+      }
+      
+      if (item.warnings) {
+        html += '<div class="mb-4">';
+        html += '<h4 class="text-sm font-semibold mb-2" style="color: var(--text-secondary);">Warnings</h4>';
+        html += '<div class="text-sm whitespace-pre-wrap p-4 rounded-lg" style="background: #fef2f2; color: #dc2626;">' + item.warnings + '</div>';
+        html += '</div>';
+      }
+      
+      document.getElementById('viewModalTitle').textContent = item.title;
+      document.getElementById('viewModalContent').innerHTML = html;
+      
+      // Highlight code
+      setTimeout(() => {
+        if (item.content) {
+          Prism.highlightElement(document.getElementById(codeId));
+        }
+      }, 100);
+      
+      document.getElementById('viewModalOverlay').classList.remove('hidden');
+    }
+    
+    function getPrismLang(lang) {
+      var map = {
+        'JavaScript': 'javascript',
+        'Python': 'python',
+        'HTML': 'markup',
+        'CSS': 'css',
+        'Bash': 'bash'
+      };
+      return map[lang] || 'javascript';
+    }
+    
+    function escapeHtml(text) {
+      var map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+      return text.replace(/[&<>"']/g, m => map[m]);
+    }
+    
+    function editItem() {
+      var indexToEdit = viewIndex;
+      closeViewModal();
+      viewIndex = indexToEdit;
+      showAddModal(true);
+    }
+    
+    function deleteItem() {
+      if (confirm('Are you sure you want to delete this?')) {
+        data.splice(viewIndex, 1);
+        saveData();
+        closeViewModal();
+        renderSidebar();
+        renderContent();
+      }
+    }
+    
+    function closeViewModal() {
+      document.getElementById('viewModalOverlay').classList.add('hidden');
+      viewIndex = -1;
+    }
+    
+    init();
+  </script>
+</body>
+</html>
