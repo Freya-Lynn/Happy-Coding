@@ -312,33 +312,35 @@
     <!-- Main Content -->
     <div class="flex flex-1 overflow-hidden">
       <!-- Sidebar -->
-      <aside class="w-56 flex-shrink-0 overflow-y-auto p-4" style="background: var(--sidebar-gradient);">
-        <!-- Avatar -->
-        <div class="flex flex-col items-center mb-6 relative">
-          <div id="avatarBtn" class="avatar-btn" onclick="toggleAvatarMenu()">🐱</div>
-          <div id="avatarName" class="mt-3 text-sm font-medium cursor-pointer" style="color: var(--text-main);" onclick="editAvatarName()">Click to add name</div>
-          <div id="avatarDaysBox" class="mt-2 px-3 py-2 rounded-lg text-xs" style="color: var(--text-main); border: 1px dashed var(--text-secondary); background: var(--avatar-days-bg);"></div>
-          <input type="text" id="avatarNameInput" class="mt-2 text-sm text-center hidden" style="color: var(--text-main); background: var(--bg-page); border: 1px solid var(--text-secondary); border-radius: 4px; padding: 2px 8px;" placeholder="Your name" onkeydown="saveAvatarName(event)" onblur="saveAvatarNameBlur()">
-        </div>
-        <div id="avatarMenu" class="avatar-menu">
-          <div class="avatar-menu-grid">
-            <div class="avatar-menu-item" onclick="setAvatar('🐱')">🐱</div>
-            <div class="avatar-menu-item" onclick="setAvatar('🐶')">🐶</div>
-            <div class="avatar-menu-item" onclick="setAvatar('🐰')">🐰</div>
-            <div class="avatar-menu-item" onclick="setAvatar('🦊')">🦊</div>
-            <div class="avatar-menu-item" onclick="setAvatar('🐼')">🐼</div>
-            <div class="avatar-menu-item" onclick="setAvatar('🐨')">🐨</div>
-            <div class="avatar-menu-item" onclick="setAvatar('🦁')">🦁</div>
-            <div class="avatar-menu-item" onclick="setAvatar('🐸')">🐸</div>
-            <div class="avatar-menu-item" onclick="setAvatar('🐻')">🐻</div>
-            <div class="avatar-menu-item" onclick="setAvatar('🐯')">🐯</div>
+      <aside class="w-56 flex-shrink-0 flex flex-col" style="background: var(--sidebar-gradient);">
+        <!-- Sidebar Content (scrollable) -->
+        <div class="flex-1 overflow-y-auto p-4">
+          <!-- Avatar -->
+          <div class="flex flex-col items-center mb-6 relative">
+            <div id="avatarBtn" class="avatar-btn" onclick="toggleAvatarMenu()">🐱</div>
+            <div id="avatarName" class="mt-3 text-sm font-medium cursor-pointer" style="color: var(--text-main);" onclick="editAvatarName()">Click to add name</div>
+            <div id="avatarDaysBox" class="mt-2 px-3 py-2 rounded-lg text-xs" style="color: var(--text-main); border: 1px dashed var(--text-secondary); background: var(--avatar-days-bg);"></div>
+            <input type="text" id="avatarNameInput" class="mt-2 text-sm text-center hidden" style="color: var(--text-main); background: var(--bg-page); border: 1px solid var(--text-secondary); border-radius: 4px; padding: 2px 8px;" placeholder="Your name" onkeydown="saveAvatarName(event)" onblur="saveAvatarNameBlur()">
           </div>
-          <div class="avatar-menu-btn" onclick="randomAvatar()">🎲 Random</div>
-          <div class="avatar-menu-btn" onclick="document.getElementById('avatarUpload').click()">📁 Upload Image</div>
-          <input type="file" id="avatarUpload" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
-        </div>
-        
-        <div class="mb-6">
+          <div id="avatarMenu" class="avatar-menu">
+            <div class="avatar-menu-grid">
+              <div class="avatar-menu-item" onclick="setAvatar('🐱')">🐱</div>
+              <div class="avatar-menu-item" onclick="setAvatar('🐶')">🐶</div>
+              <div class="avatar-menu-item" onclick="setAvatar('🐰')">🐰</div>
+              <div class="avatar-menu-item" onclick="setAvatar('🦊')">🦊</div>
+              <div class="avatar-menu-item" onclick="setAvatar('🐼')">🐼</div>
+              <div class="avatar-menu-item" onclick="setAvatar('🐨')">🐨</div>
+              <div class="avatar-menu-item" onclick="setAvatar('🦁')">🦁</div>
+              <div class="avatar-menu-item" onclick="setAvatar('🐸')">🐸</div>
+              <div class="avatar-menu-item" onclick="setAvatar('🐻')">🐻</div>
+              <div class="avatar-menu-item" onclick="setAvatar('🐯')">🐯</div>
+            </div>
+            <div class="avatar-menu-btn" onclick="randomAvatar()">🎲 Random</div>
+            <div class="avatar-menu-btn" onclick="document.getElementById('avatarUpload').click()">📁 Upload Image</div>
+            <input type="file" id="avatarUpload" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
+          </div>
+          
+          <div class="mb-6">
           <h3 class="text-sm font-semibold uppercase mb-2 px-3" style="color: var(--text-secondary);">Languages</h3>
           <div id="languageList"></div>
         </div>
@@ -349,6 +351,18 @@
         <div>
           <h3 class="text-sm font-semibold uppercase mb-2 px-3" style="color: var(--text-secondary);">Tags</h3>
           <div id="tagList" class="flex flex-wrap gap-2 px-3"></div>
+        </div>
+        </div>
+        
+        <!-- Import/Export Buttons -->
+        <div class="p-4 border-t flex gap-2 flex-shrink-0" style="border-color: var(--text-secondary);">
+          <button onclick="exportData()" class="btn-laser flex-1 px-2 py-2 rounded-lg text-xs font-medium transition">
+            Export
+          </button>
+          <label class="btn-laser flex-1 px-2 py-2 rounded-lg text-xs font-medium transition cursor-pointer text-center">
+            Import
+            <input type="file" accept=".json" onchange="importData(event)" style="display: none;">
+          </label>
         </div>
       </aside>
       
@@ -660,6 +674,72 @@
       localStorage.setItem('happy-coding-prompts', JSON.stringify(promptsData));
     }
     
+    function exportData() {
+      var exportObj = {
+        version: '1.0',
+        exportDate: new Date().toISOString(),
+        data: data,
+        promptsData: promptsData,
+        avatar: localStorage.getItem('happy-coding-avatar'),
+        avatarImage: localStorage.getItem('happy-coding-avatar-image'),
+        avatarName: localStorage.getItem('happy-coding-avatar-name'),
+        theme: localStorage.getItem('happy-coding-theme')
+      };
+      
+      var blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'happy-coding-backup-' + new Date().toISOString().split('T')[0] + '.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+    
+    function importData(event) {
+      var file = event.target.files[0];
+      if (!file) return;
+      
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          var importObj = JSON.parse(e.target.result);
+          
+          if (importObj.data) {
+            data = importObj.data;
+          }
+          if (importObj.promptsData) {
+            promptsData = importObj.promptsData;
+          }
+          if (importObj.avatar) {
+            localStorage.setItem('happy-coding-avatar', importObj.avatar);
+          }
+          if (importObj.avatarImage) {
+            localStorage.setItem('happy-coding-avatar-image', importObj.avatarImage);
+          }
+          if (importObj.avatarName) {
+            localStorage.setItem('happy-coding-avatar-name', importObj.avatarName);
+          }
+          if (importObj.theme) {
+            localStorage.setItem('happy-coding-theme', importObj.theme);
+            document.documentElement.setAttribute('data-theme', importObj.theme);
+            updateThemeIcon(importObj.theme);
+          }
+          
+          saveData();
+          renderAvatar();
+          renderSidebar();
+          renderContent();
+          alert('Data imported successfully!');
+        } catch (err) {
+          alert('Failed to import data: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+    
     function renderSidebar() {
       var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       var dotColor = isDark ? '#8ab4f8' : null;
@@ -857,6 +937,7 @@
           html += '<div onclick="viewItem(' + index + ')" class="content-card p-4 cursor-pointer">';
           html += '<div class="flex items-start justify-between mb-3">';
           html += '<h3 class="font-semibold text-base" style="color: var(--text-main);">' + item.title + '</h3>';
+          html += '<button onclick="event.stopPropagation(); copyCodeSnippet(' + index + ')" class="btn-laser px-2 py-1 rounded text-xs">Copy</button>';
           html += '</div>';
           html += '<div class="flex items-center gap-2 mb-3">';
           html += '<span class="tag-chip" style="background: ' + langColor + '20; color: ' + langTextColor + ' !important;">' + item.language + '</span>';
@@ -912,6 +993,16 @@
           html += '</div>';
         });
         grid.innerHTML = html;
+      }
+    }
+    
+    function copyCodeSnippet(index) {
+      var filtered = getFilteredData();
+      var item = filtered[index];
+      if (item && item.content) {
+        navigator.clipboard.writeText(item.content).then(function() {
+          alert('Copied to clipboard!');
+        });
       }
     }
     
