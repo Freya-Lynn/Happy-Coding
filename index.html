@@ -445,6 +445,7 @@
     var searchQuery = '';
     var editIndex = -1;
     var viewIndex = -1;
+    var viewType = 'code'; // 'code' or 'prompt'
     
     var languages = [
       { name: 'JavaScript', color: '#f7df1e', category: 'Web' },
@@ -1020,7 +1021,50 @@
       var filtered = getFilteredData();
       var item = filtered[index];
       viewIndex = promptsData.indexOf(item);
-      viewItem(index);
+      viewType = 'prompt';
+      viewPromptItem(index);
+    }
+    
+    function viewPromptItem(index) {
+      var item = getFilteredData()[index];
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      var scenarioColor = scenarioColors[item.scenario] || '#888888';
+      var scenarioTextColor = isDark ? '#ffffff' : scenarioColor;
+      
+      var html = '';
+      html += '<div class="mb-4">';
+      html += '<h2 class="text-xl font-semibold mb-3" style="color: var(--text-main);">' + item.title + '</h2>';
+      if (item.scenario) {
+        html += '<div class="flex items-center gap-2 mb-4">';
+        html += '<span class="tag-chip" style="background: ' + scenarioColor + '20; color: ' + scenarioTextColor + ' !important;">' + item.scenario + '</span>';
+        html += '</div>';
+      }
+      if (item.tags && item.tags.length > 0) {
+        html += '<div class="flex flex-wrap gap-1 mb-4">';
+        item.tags.forEach(tag => {
+          html += '<span class="text-xs px-2 py-0.5 rounded" style="background: var(--bg-page); color: var(--text-secondary);">' + tag + '</span>';
+        });
+        html += '</div>';
+      }
+      html += '</div>';
+      
+      if (item.content) {
+        html += '<div class="mb-4">';
+        html += '<h4 class="text-sm font-semibold mb-2" style="color: var(--text-secondary);">Prompt</h4>';
+        html += '<pre class="rounded-lg p-4 text-sm" style="background: var(--bg-page); color: var(--text-main); white-space: pre-wrap;">' + escapeHtml(item.content) + '</pre>';
+        html += '</div>';
+      }
+      
+      if (item.example) {
+        html += '<div class="mb-4">';
+        html += '<h4 class="text-sm font-semibold mb-2" style="color: var(--text-secondary);">Example</h4>';
+        html += '<div class="text-sm whitespace-pre-wrap p-4 rounded-lg" style="background: var(--bg-page); color: var(--text-main);">' + item.example + '</div>';
+        html += '</div>';
+      }
+      
+      document.getElementById('viewModalTitle').textContent = item.title;
+      document.getElementById('viewModalContent').innerHTML = html;
+      document.getElementById('viewModalOverlay').classList.remove('hidden');
     }
     
     function showAddModal(isEdit) {
@@ -1171,6 +1215,7 @@
     function viewItem(index) {
       var item = getFilteredData()[index];
       viewIndex = data.indexOf(item);
+      viewType = 'code';
       
       var langColor = languageColors[item.language] || '#888888';
       var techColor = techColors[item.tech] || '#888888';
@@ -1250,14 +1295,25 @@
     
     function editItem() {
       var indexToEdit = viewIndex;
+      var typeToEdit = viewType;
       closeViewModal();
       viewIndex = indexToEdit;
-      showAddModal(true);
+      if (typeToEdit !== currentTab) {
+        switchTab(typeToEdit === 'code' ? 'code' : 'prompts');
+      }
+      setTimeout(() => {
+        viewIndex = indexToEdit;
+        showAddModal(true);
+      }, 100);
     }
     
     function deleteItem() {
       if (confirm('Are you sure you want to delete this?')) {
-        data.splice(viewIndex, 1);
+        if (viewType === 'code') {
+          data.splice(viewIndex, 1);
+        } else {
+          promptsData.splice(viewIndex, 1);
+        }
         saveData();
         closeViewModal();
         renderSidebar();
@@ -1268,6 +1324,7 @@
     function closeViewModal() {
       document.getElementById('viewModalOverlay').classList.add('hidden');
       viewIndex = -1;
+      viewType = 'code';
     }
     
     init();
